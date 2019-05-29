@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
-import {Input, Button, Row, Col} from 'reactstrap';
+import {Input, Button, Row, Col, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import shortid from 'shortid'
+import { MdSave, MdRemoveRedEye } from "react-icons/md";
 
 export default class TodoInput extends Component {
     constructor(props) {
         super(props)
     
         this.state = {
-             todoItem: ''
+             todoItem: '',
+             dropdownOpen: false
         }
     }
+
+    toggle() {
+        this.setState(prevState => ({
+          dropdownOpen: !prevState.dropdownOpen
+        }));
+      }
 
     handleChange = (event) => {
         this.setState({[event.target.name] : event.target.value})
@@ -17,11 +25,12 @@ export default class TodoInput extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        if (this.state.todoItem.length > 0) {
+        if (this.state.todoItem.length > 0 && this.state.todoItem.replace(/\s/g, '').length) {
             this.props.onSubmit({
                 id: shortid.generate(),
                 desc: this.state.todoItem,
-                done: false
+                done: false,
+                display: true
             })
         }else{
             alert ("I'm pretty sure you are forgetting to write the task")
@@ -42,13 +51,21 @@ export default class TodoInput extends Component {
                         <Input type="text" name="todoItem" value={this.state.todoItem} onChange={this.handleChange} placeholder="Type a task and press Save"/>
                     </Col>
                     <Col>
-                        <Button color="primary" onClick={this.handleSubmit} type="submit">Save</Button>
+                        <Button color="primary" onClick={this.handleSubmit} type="submit"><MdSave/></Button>
                     </Col>
                     <Col>
-                        <Button color="info" onClick={()=>this.handleFilter("completed")}>Terminados</Button>
-                    </Col>
-                    <Col>
-                        <Button color="info" onClick={()=>this.handleFilter("uncompleted")}>Pendientes</Button>
+                        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle.bind(this)}>
+                            <DropdownToggle caret>
+                            Filter
+                            </DropdownToggle>
+                            <DropdownMenu>
+                            <DropdownItem header>Filter</DropdownItem>
+                            <DropdownItem onClick={()=>this.handleFilter("completed")}>Completed</DropdownItem>
+                            <DropdownItem onClick={()=>this.handleFilter("uncompleted")}>Uncompleted</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem onClick={()=>this.handleFilter("all")}>Reset</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </Col>
                 </Row>
             </form>

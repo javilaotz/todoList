@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ListGroupItem, Button } from 'reactstrap'
 import './css/todoItem.css'
+import { MdBookmark } from "react-icons/md";
 
 export default class TodoItem extends Component {
     constructor(props) {
@@ -17,16 +18,15 @@ export default class TodoItem extends Component {
         
     }
 
-    handleClass(done){
-        if (done) {
-            return "done"
+    handleClass(item){
+        if (item.done) { 
+            return ' done '
         }
     }
     
     render() {
         let itemList = this.state.itemList.map((item) => {
-            let button = <Button onClick={()=>this.handleClick(item.id)}> done </Button>
-            let element = <ListGroupItem className={this.handleClass(item.done)} disabled={item.done} key={item.id}>{button}{item.desc}</ListGroupItem>
+            let element = item.display? <ListGroupItem onClick={()=>this.handleClick(item.id)} className={this.handleClass(item)} disabled={item.done} key={item.id}><MdBookmark/>  {item.desc}</ListGroupItem> : null
             return element
         })
         return itemList

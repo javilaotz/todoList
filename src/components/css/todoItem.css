@@ -1,3 +1,7 @@
 .done{
     text-decoration:line-through;
 }
+
+li.list-group-item {
+    cursor: pointer;
+}

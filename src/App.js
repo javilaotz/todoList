@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import TodoHeader from "./components/header";
 import TodoInput from "./components/input";
 import TodoList from "./components/todoList";
@@ -31,13 +31,33 @@ export default class App extends Component  {
   }
 
   filterList(opc){
+    let itemList = this.state.itemList;
     switch (opc) {
       case "completed":
-          alert("looking for completed");
+          itemList.forEach(item => {
+            if (item.done) {
+              item.display = true
+            }else{
+              item.display = false
+            }
+          });
+          this.setState({itemList: itemList})
           break;
       
       case "uncompleted":
-          alert("looking for uncompleted");
+          itemList.forEach(item => {
+            if (item.done) {
+              item.display = false
+            }else{
+              item.display = true
+            }
+          });
+          this.setState({itemList: itemList})
+          break;
+      
+      case "all":
+          itemList.forEach(item => item.display = true);
+          this.setState({itemList: itemList})
           break;
   
       default:
@@ -50,12 +70,12 @@ export default class App extends Component  {
       <Container>
         <TodoHeader />
           <Row>
-            <Col xs="8">
-              <TodoInput onSubmit={this.onSubmit.bind(this)} onFilter={this.filterList}/>
+            <Col xs="12">
+              <TodoInput onSubmit={this.onSubmit.bind(this)} onFilter={this.filterList.bind(this)}/>
             </Col>
           </Row>
           <Row>
-            <Col xs="8">
+            <Col xs="4">
               <TodoList update={this.update.bind(this)} itemList={this.state.itemList}/>
             </Col>
           </Row>
