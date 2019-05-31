@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import {Input, Button, Row, Col, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import shortid from 'shortid'
-import { MdSave, MdRemoveRedEye } from "react-icons/md";
+import { MdSave } from "react-icons/md";
+import { FaGithub } from "react-icons/fa";
+import './css/input.css'
 
 export default class TodoInput extends Component {
     constructor(props) {
@@ -29,8 +31,7 @@ export default class TodoInput extends Component {
             this.props.onSubmit({
                 id: shortid.generate(),
                 desc: this.state.todoItem,
-                done: false,
-                display: true
+                done: false
             })
         }else{
             alert ("I'm pretty sure you are forgetting to write the task")
@@ -66,6 +67,9 @@ export default class TodoInput extends Component {
                             <DropdownItem onClick={()=>this.handleFilter("all")}>Reset</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
+                    </Col>
+                    <Col>
+                        <Button color="link"><FaGithub/></Button>
                     </Col>
                 </Row>
             </form>

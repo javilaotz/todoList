@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 
 export default class TodoHeader extends Component {
+    items = []
+
+    
     render() {
         return (
             <div>
-                <h1>Todo List</h1>
+                <h4>Todo List</h4>
             </div>
         )
     }

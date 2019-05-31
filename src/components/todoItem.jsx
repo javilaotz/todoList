@@ -8,7 +8,6 @@ export default class TodoItem extends Component {
         super(props)
     
         this.state = {
-             itemList : this.props.itemList,
              class: ''
         }
     }
@@ -25,9 +24,8 @@ export default class TodoItem extends Component {
     }
     
     render() {
-        let itemList = this.state.itemList.map((item) => {
-            let element = item.display? <ListGroupItem onClick={()=>this.handleClick(item.id)} className={this.handleClass(item)} disabled={item.done} key={item.id}><MdBookmark/>  {item.desc}</ListGroupItem> : null
-            return element
+        let itemList = this.props.itemList.map((item) => {
+            return <ListGroupItem onClick={()=>this.handleClick(item.id)} className={this.handleClass(item)} disabled={item.done} key={item.id}><MdBookmark/>  {item.desc}</ListGroupItem>
         })
         return itemList
     }
