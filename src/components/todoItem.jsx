@@ -18,9 +18,9 @@ export default class TodoItem extends Component {
 
   handleClass(item) {
     if (item.done) {
-      return ' done ';
+      return 'done';
     } else {
-      return '  ';
+      return '';
     }
   }
 
