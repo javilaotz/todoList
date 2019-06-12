@@ -1,18 +1,22 @@
 let items = [
   {
     id: '7Q4t_QQGU',
-    desc: 'Task 1',
+    desc: 'Task 1 from API',
     done: false
   },
   {
     id: '75t_GUQQ',
-    desc: 'Task 2',
+    desc: 'Task 2 from API',
     done: false
   }
 ];
 
 export const fetchTodos = () => {
-  return Promise.resolve(items);
+  return new Promise(resolve =>
+    setTimeout(() => {
+      resolve(items);
+    }, 3000)
+  );
 };
 
 export const addTodo = i => {

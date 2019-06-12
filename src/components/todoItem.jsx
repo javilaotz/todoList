@@ -12,10 +12,6 @@ export default class TodoItem extends Component {
     };
   }
 
-  handleClick(id) {
-    this.props.update(id);
-  }
-
   handleClass(item) {
     if (item.done) {
       return 'done';
@@ -25,17 +21,14 @@ export default class TodoItem extends Component {
   }
 
   render() {
-    let itemList = this.props.itemList.map(item => {
-      return (
-        <ListGroupItem
-          onClick={() => this.handleClick(item.id)}
-          className={this.handleClass(item)}
-          key={item.id}
-        >
-          <MdBookmark /> {item.desc}
-        </ListGroupItem>
-      );
-    });
-    return itemList;
+    return (
+      <ListGroupItem
+        onClick={this.props.update}
+        className={this.handleClass(this.props.item)}
+        key={this.props.item.id}
+      >
+        <MdBookmark /> <span>{this.props.item.desc}</span>
+      </ListGroupItem>
+    );
   }
 }

@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import { ListGroup } from 'reactstrap';
 
-import TodoItem from './todoItem';
+import TodoItem from './TodoItem';
 
 export default class TodoList extends Component {
-  update(id) {
-    this.props.update(id);
-  }
-
   render() {
+    let itemList = this.props.itemList;
+
     return (
       <ListGroup>
-        <TodoItem
-          update={this.update.bind(this)}
-          itemList={this.props.itemList}
-          filter={this.props.filter}
-        />
+        {itemList.map(item => (
+          <TodoItem
+            update={() => {
+              this.props.update(item.id);
+            }}
+            item={item}
+            key={item.id}
+          />
+        ))}
       </ListGroup>
     );
   }

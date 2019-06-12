@@ -2,72 +2,56 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { ListGroupItem } from 'reactstrap';
 
-import TodoItem from './todoItem';
-import { exportAllDeclaration } from '@babel/types';
+import TodoItem from './TodoItem';
 
-//esto es un caso
-it('runs', () => {
-  expect(true).toBe(true);
-});
-
-//component test
-it('renders TodoItems', () => {
-  const subject = shallow(
-    <TodoItem
-      itemList={[
-        {
+describe('TodoItem', () => {
+  //component test
+  it('renders Todo', () => {
+    const subject = shallow(
+      <TodoItem
+        item={{
           id: 'id',
           desc: 'desc',
           done: false
-        },
-        {
+        }}
+      />
+    );
+
+    expect(subject.find('span').text()).toBe('desc');
+  });
+
+  //
+  it('updates todo', () => {
+    const update = jest.fn();
+    const subject = shallow(
+      <TodoItem
+        update={update}
+        item={{
           id: 'id2',
           desc: 'desc2',
           done: false
-        }
-      ]}
-    />
-  );
+        }}
+      />
+    );
+    subject.find(ListGroupItem).simulate('click');
 
-  expect(subject.find(ListGroupItem)).toHaveLength(2);
-});
+    expect(update).toHaveBeenCalledTimes(1);
+    expect(update).toHaveBeenCalledWith(/*nothing*/);
+  });
 
-it('triggers update on listItem click', () => {
-  const id = 'id';
-  const update = jest.fn();
-  const subject = shallow(
-    <TodoItem
-      update={update}
-      itemList={[
-        {
-          id,
-          desc: 'desc',
-          done: false
-        }
-      ]}
-    />
-  );
-
-  subject.find(ListGroupItem).simulate('click');
-
-  expect(update).toHaveBeenCalledTimes(1);
-  expect(update).toHaveBeenCalledWith(id);
-});
-
-//
-it('renders items marked as `done` ', () => {
-  const subject = shallow(
-    <TodoItem
-      itemList={[
-        {
+  //
+  it('renders items marked as `done` ', () => {
+    const subject = shallow(
+      <TodoItem
+        item={{
           id: 'id',
           desc: 'desc',
           done: true
-        }
-      ]}
-    />
-  );
+        }}
+      />
+    );
 
-  const className = subject.find(ListGroupItem).prop('className');
-  expect(className).toBe('done');
+    const className = subject.find(ListGroupItem).prop('className');
+    expect(className).toBe('done');
+  });
 });

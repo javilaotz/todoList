@@ -1,76 +1,70 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import TodoHeader from './components/header';
-import TodoInput from './components/input';
-import TodoList from './components/todoList';
+import TodoHeader from './components/Header';
+import TodoInput from './components/Input';
+import TodoList from './components/TodoList';
 
-import { fetchTodos, addTodo, toggleTodo } from './components/api';
+import { connect } from 'react-redux';
 
-export default class App extends Component {
-  state = {
-    itemList: [],
-    filter: 'all'
-  };
+import * as actions from './actions';
 
-  onSubmit = item => {
-    addTodo(item).then(i => {
-      let itemList = this.state.itemList;
-      let newList = [...itemList, i];
-      this.setState({ itemList: newList });
-    });
-  };
+const getVisibleTodos = (todos, filter) =>
+  todos.filter(todo => {
+    switch (filter) {
+      case 'completed':
+        return todo.done;
 
-  componentDidMount = () => {
-    fetchTodos().then(i => {
-      this.setState({ itemList: i });
-    });
-  };
+      case 'uncompleted':
+        return !todo.done;
 
-  update(id) {
-    //encontrar elemento y reemplazarlo
-    toggleTodo(id).then(i => {
-      this.setState({ itemList: i });
-    });
+      default:
+        return true;
+    }
+  });
+
+class App extends Component {
+  componentDidMount() {
+    this.props.fetchTodos();
   }
-
-  filterList(opc) {
-    this.setState({ filter: opc });
-  }
-
   render() {
-    let visibleItemList = this.state.itemList.filter(item => {
-      switch (this.state.filter) {
-        case 'completed':
-          return item.done;
-
-        case 'uncompleted':
-          return !item.done;
-
-        default:
-          return true;
-      }
-    });
-
+    const {
+      visibleTodos,
+      filter,
+      addTodo,
+      applyFilter,
+      updateTodo,
+      isFetching
+    } = this.props;
     return (
       <Container>
-        <TodoHeader />
+        <TodoHeader title="Todo List" />
         <Row>
           <Col xs="12">
-            <TodoInput
-              onSubmit={this.onSubmit}
-              onFilter={this.filterList.bind(this)}
-            />
+            <TodoInput onSubmit={addTodo} onFilter={applyFilter} />
           </Col>
         </Row>
         <Row>
           <Col xs="4">
-            <TodoList
-              update={this.update.bind(this)}
-              itemList={visibleItemList}
-            />
+            {isFetching ? (
+              'loading'
+            ) : (
+              <TodoList update={updateTodo} itemList={visibleTodos} />
+            )}
           </Col>
         </Row>
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  filter: state.filter,
+  visibleTodos:
+    state.todos.entries && getVisibleTodos(state.todos.entries, state.filter),
+  isFetching: !state.todos.isFetched
+}); //adaptador state component
+
+export default connect(
+  mapStateToProps,
+  actions
+)(App); //HOC, conectando redux con el componente (curry pattern)
