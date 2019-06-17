@@ -11,7 +11,9 @@ import reduxThunk from 'redux-thunk';
 
 import reducer from './reducer';
 
-const store = createStore(reducer, applyMiddleware(reduxThunk)); //recibe el reductor
+const middleware = applyMiddleware(reduxThunk);
+
+const store = createStore(reducer, middleware); //recibe el reductor
 
 ReactDOM.render(
   <Provider store={store}>

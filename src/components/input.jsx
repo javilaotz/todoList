@@ -3,12 +3,15 @@ import { Input, Button, Row, Col } from 'reactstrap';
 import { MdSave } from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 
+import { connect } from 'react-redux';
+import { applyFilter, addTodo } from '../actions';
+
 import shortid from 'shortid';
 import TodoFilter from './TodoFilter';
 
 import './css/input.css';
 
-export default class TodoInput extends Component {
+class TodoInput extends Component {
   constructor(props) {
     super(props);
 
@@ -70,3 +73,10 @@ export default class TodoInput extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({}); //adaptador state component
+
+export default connect(
+  mapStateToProps,
+  { onFilter: applyFilter, onSubmit: addTodo }
+)(TodoInput); //HOC, conectando redux con el componente (curry pattern)
