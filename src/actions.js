@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import * as api from './components/Api';
+import * as api from './components/api';
 
 //Action creators
 //export const addTodo = todo => ({ type: actionTypes.ADD_TODO, payload: todo });

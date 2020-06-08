@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import TodoHeader from './components/Header';
-import TodoInput from './components/Input';
+import TodoHeader from './components/HeaderComponent';
+import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
 
 export default function App() {
